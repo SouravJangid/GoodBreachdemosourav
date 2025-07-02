@@ -1,0 +1,26 @@
+// this is for apk builds
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  }
+}
+this is for app bundle builds
+{
+  "build": {
+    "release": {
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  }
+}

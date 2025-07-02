@@ -1,5 +1,5 @@
 import { getData } from '../utils/AsyncStorage';
-
+import { Alert } from 'react-native';
 export const BASE_URL = 'http://3.8.94.61:8080/api';
 
 export const apiCall = async (endpoint, method, data, token = null) => {
@@ -29,15 +29,30 @@ export const apiCall = async (endpoint, method, data, token = null) => {
     config.body = JSON.stringify(data);
   }
 
+  // try {
+  //   console.log(`🔍 API Call: ${method} ${BASE_URL}${endpoint}`, config);
+  //   const response = await fetch(`${BASE_URL}${endpoint}`, config);
+  //   const result = await response.json();
+  //   console.log(`📡 API Response: ${response.status} ${endpoint}`, result);
+  //   return { data: result, status: response.status };
+  // } catch (error) {
+  //   return { error: error.message, status: 500 };
+  // }
   try {
-    console.log(`🔍 API Call: ${method} ${BASE_URL}${endpoint}`, config);
-    const response = await fetch(`${BASE_URL}${endpoint}`, config);
-    const result = await response.json();
-    console.log(`📡 API Response: ${response.status} ${endpoint}`, result);
-    return { data: result, status: response.status };
-  } catch (error) {
-    return { error: error.message, status: 500 };
-  }
+  const response = await fetch(`${BASE_URL}${endpoint}`, config);
+  const result = await response.json();
+
+  return {
+    data: result,
+    status: response.status,
+    error: !response.ok ? result?.message || 'Server error' : null,
+  };
+} catch (error) {
+  console.error("❌ Fetch error:", error.message);
+  Alert.alert("Network Error", error.message); // Helpful for APK
+  return { error: error.message, status: 500 };
+}
+
 };
 
 // export const api = async (endpoint, method = 'GET', body, token) => {

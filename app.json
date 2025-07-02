@@ -16,19 +16,21 @@
       "supportsTablet": true
     },
     "android": {
+       "targetSdkVersion": 35,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.umang_dev.goodbreach"
+      "package": "com.goodbreach.goodbreach",
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "4d2961cb-385b-4c08-bde7-c32d579869b7"
+        "projectId": "1e122009-738a-43a2-a6e1-093c73def251"
       }
     }
   }

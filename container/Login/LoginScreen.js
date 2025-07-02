@@ -24,19 +24,46 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
-    const { status, data } = await apiCall('/user/login', 'POST', { email, password });
+  // const handleLogin = async () => {
+  //   const { status, data } = await apiCall('/user/login', 'POST', { email, password });
 
-    if (status === 200) {
-      Alert.alert('Error', 'An error occurred.');
-    } else if (status === 400) {
-      Alert.alert('Wrong Credentials');
-    } else if (status === 201) {
+  //   if (status === 200) {
+  //     Alert.alert('Error', 'An error occurred.');
+  //   } else if (status === 400) {
+  //     Alert.alert('Wrong Credentials');
+  //   } else if (status === 201) {
+  //     const user = data.data;
+  //     await saveToStorage('user', user);
+  //     navigation.navigate('Home');
+  //   }
+  // };
+const handleLogin = async () => {
+  try {
+    const { status, data, error } = await apiCall('/user/login', 'POST', {
+      email,
+      password,
+    });
+
+    if (status === 201) {
       const user = data.data;
       await saveToStorage('user', user);
       navigation.navigate('Home');
+    } else if (status === 400) {
+      Alert.alert('Login Failed', data?.message ||error||'Invalid credentials');
+    } else if (status === 401) {
+      Alert.alert('Unauthorized', 'Please check your email and password');
+      Alert.alert('Login Failed', data?.message || error||'Invalid credentials');
+    } else if (status === 500) {
+      // Alert.alert('Server Error', 'Something went wrong on our end.');
+        Alert.alert('Server Error', data?.message ||error|| 'Something went wrong on our end.');
+    } else {
+      Alert.alert('Error', data?.message || error || 'Unknown error occurred');
     }
-  };
+  } catch (e) {
+    console.error('❌ Exception during login:', e);
+    Alert.alert('Error', e.message || 'Unexpected error');
+  }
+};
 
   return (
     <KeyboardAvoidingView 
